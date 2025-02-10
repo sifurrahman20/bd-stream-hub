@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live TV Streaming</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
+        }
+        .channel {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        h1 {
+            padding: 10px;
+            background: #333;
+            color: white;
+            margin: 0;
+        }
+        @media (max-width: 600px) {
+            .channel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Live TV Streaming</h1>
+    <div class="container">
+        <div class="channel"><h2>Output 2</h2><video id="tv1" controls></video></div>
+        <div class="channel"><h2>Output 3</h2><video id="tv2" controls></video></div>
+        <div class="channel"><h2>Output 4</h2><video id="tv3" controls></video></div>
+        <div class="channel"><h2>Output 5</h2><video id="tv4" controls></video></div>
+        <div class="channel"><h2>Output 6</h2><video id="tv5" controls></video></div>
+        <div class="channel"><h2>UA</h2><video id="tv6" controls></video></div>
+        <div class="channel"><h2>Super Football</h2><video id="tv7" controls></video></div>
+        <div class="channel"><h2>Peacock</h2><video id="tv8" controls></video></div>
+        <div class="channel"><h2>En Vivo</h2><video id="tv9" controls></video></div>
+    </div>
+
+    <script>
+        function loadStream(videoElementId, streamUrl) {
+            var video = document.getElementById(videoElementId);
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = streamUrl;
+                video.play();
+            }
+
+            video.addEventListener("click", function () {
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.mozRequestFullScreen) {
+                    video.mozRequestFullScreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+            });
+        }
+
+        loadStream('tv1', 'https://liveua.score806.cc/au_optus2/tracks-v1a1/mono.m3u8');
+        loadStream('tv2', 'https://liveua.score806.cc/au_optus3/tracks-v1a1/mono.m3u8');
+        loadStream('tv3', 'https://liveua.score806.cc/au_optus4/tracks-v1a1/mono.m3u8');
+        loadStream('tv4', 'https://liveua.score806.cc/au_optus5/tracks-v1a1/mono.m3u8');
+        loadStream('tv5', 'https://liveua.score806.cc/au_optus6/tracks-v1a1/mono.m3u8');
+        loadStream('tv6', 'https://liveua.score806.cc/epl_wol/tracks-v1a1/mono.m3u8');
+        loadStream('tv7', 'https://liveua.score806.cc/za_ssfb/tracks-v1a1/mono.m3u8');
+        loadStream('tv8', 'https://liveua.score806.cc/epl_lei/tracks-v1a1/mono.m3u8');
+        loadStream('tv9', 'https://liveua.score806.cc/us_foxdeport/tracks-v1a1/mono.m3u8');
+    </script>
+
+</body>
+</html>
